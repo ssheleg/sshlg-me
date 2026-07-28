@@ -14,7 +14,7 @@ export const skillFamily = {
   install: "npx github:ssheleg/sshlg-skills install",
   license: "MIT",
   blurb:
-    "The way I take an idea to production — discovery, gated delivery, product marketing, onboarding, retention, search — written down as skills a coding agent follows.",
+    "Discovery, gated delivery, product marketing, onboarding, retention, search: the steps I take an idea through, written so an agent follows them instead of improvising.",
   skills: [
     {
       name: "task-pipeline",

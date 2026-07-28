@@ -11,30 +11,10 @@ export type Project = {
   description: string;
   highlights: string[];
   stack: string[];
-  accent: "cyan" | "lime" | "violet" | "amber";
+  accent: "cyan" | "lime" | "violet";
 };
 
 export const projects: Project[] = [
-  {
-    slug: "sshlg-skills",
-    name: "sshlg-skills",
-    domain: "github.com/ssheleg/sshlg-skills",
-    url: "https://github.com/ssheleg/sshlg-skills",
-    yearStart: 2026,
-    yearEnd: "present",
-    status: "live",
-    category: "Open source · agent skills",
-    tagline: "Thirteen years of product judgement, installed into your coding agent.",
-    description:
-      "An open-source skill family that teaches coding agents how to take an idea to production the way a product team does — scenario-driven UX, gated delivery stages, product marketing, onboarding and retention baked in. One command installs it into Claude Code, Cursor, Codex, OpenCode, Gemini CLI, Windsurf, Zed and more.",
-    highlights: [
-      "4 skills: super-ux · task-pipeline · make-skill · sheleg-design",
-      "One launcher installs across 12+ agents — no per-agent setup",
-      "MIT-licensed, zero-dependency, validated in CI",
-    ],
-    stack: ["Node.js", "Claude Code", "Cursor", "Codex", "MIT"],
-    accent: "amber",
-  },
   {
     slug: "prowl",
     name: "Prowl",

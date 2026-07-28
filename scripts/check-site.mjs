@@ -28,7 +28,7 @@ const REQUIRED = [
   "svlab.online",
 ];
 
-const SECTION_ORDER = ["Whoami", "Now", "Projects", "Writing", "Contact"];
+const SECTION_ORDER = ["Whoami", "Toolkit", "Projects", "Writing", "Contact"];
 
 const failures = [];
 const fail = (where, why) => failures.push(`${where} → ${why}`);

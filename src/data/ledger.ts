@@ -46,7 +46,7 @@ const fromProjects: LedgerEntry[] = projects.map((p) => ({
   role: "Build · GTM · ops",
   blurb: p.tagline,
   tags: [p.category],
-  kind: p.slug === "sshlg-skills" ? "open-source" : "ai-product",
+  kind: "ai-product",
   featured: true,
 }));
 

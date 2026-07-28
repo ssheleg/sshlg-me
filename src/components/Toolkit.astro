@@ -1,0 +1,242 @@
+---
+import { skillFamily } from "@/data/open-source";
+import { site } from "@/data/site";
+---
+
+<section class="section toolkit" id="toolkit">
+  <div class="page">
+    <p class="section-index reveal">
+      <span class="num">02</span>
+      <span>Toolkit</span>
+    </p>
+
+    <div class="head reveal">
+      <h2>How I run agents.</h2>
+      <p>
+        Left alone, a coding agent produces volume: plausible code nobody can
+        ship, scale, or maintain. So I wrote down the way I actually take an
+        idea to production and packaged it as skills any agent can follow.
+        {site.yearsExperience} years of product decisions, installable.
+      </p>
+      <p class="aside">
+        Not a product I sell — a set I use daily and keep public.
+      </p>
+    </div>
+
+    <div class="install reveal">
+      <span class="mono install-label">install</span>
+      <code>
+        <span class="prompt">$</span>
+        {skillFamily.install}
+      </code>
+      <a class="repo" href={skillFamily.repo} target="_blank" rel="noopener noreferrer">
+        {skillFamily.name}
+        <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+
+    <ol class="skills">
+      {skillFamily.skills.map((s, i) => (
+        <li class="skill reveal">
+          <a href={s.repo} target="_blank" rel="noopener noreferrer">
+            <div class="skill-head">
+              <span class="mono num">{String(i + 1).padStart(2, "0")}</span>
+              <span class="skill-name">{s.name}</span>
+              {s.isNew && <span class="new">new</span>}
+              <span class="skill-arrow" aria-hidden="true">↗</span>
+            </div>
+            <p class="skill-what">{s.what}</p>
+          </a>
+        </li>
+      ))}
+    </ol>
+
+    <p class="runs mono reveal">
+      Runs in {skillFamily.agents.slice(0, 6).join(", ")} and{" "}
+      {skillFamily.agents.length - 6} more · {skillFamily.license}
+    </p>
+  </div>
+</section>
+
+<style>
+  .toolkit {
+    background: var(--bg-sub);
+  }
+
+  .head {
+    margin-top: 1.6rem;
+    display: grid;
+    gap: 1rem 3rem;
+    grid-template-columns: 1fr;
+    align-items: end;
+  }
+
+  @media (min-width: 960px) {
+    .head {
+      grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
+    }
+  }
+
+  .head h2 {
+    font-size: clamp(1.8rem, 3.6vw, 2.7rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 600;
+  }
+
+  .head p {
+    color: var(--ink-muted);
+    line-height: 1.65;
+    max-width: 60ch;
+  }
+
+  .head .aside {
+    grid-column: 1 / -1;
+    font-size: 0.92rem;
+    color: var(--ink-subtle);
+  }
+
+  .install {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.7rem 1.1rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--ink);
+    border-radius: 0.4rem;
+    background: var(--bg);
+  }
+
+  .install-label {
+    color: var(--ink-subtle);
+  }
+
+  .install code {
+    font-family: var(--font-mono);
+    font-size: 0.86rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+
+  .install code::-webkit-scrollbar {
+    display: none;
+  }
+
+  .prompt {
+    color: var(--accent);
+    margin-right: 0.6ch;
+  }
+
+  .repo {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .repo:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  /* A numbered list, not a card grid — five items read faster as a column
+     pair than as five equal boxes. */
+  .skills {
+    margin-top: 1.75rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    border-top: 1px solid var(--line-strong);
+  }
+
+  @media (min-width: 900px) {
+    .skills {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 3rem;
+    }
+
+    /* An odd count leaves a half-empty row; the last item takes the width
+       instead of trailing a dangling rule. */
+    .skill:nth-child(odd):last-child {
+      grid-column: 1 / -1;
+    }
+
+    .skill:nth-child(odd):last-child .skill-what {
+      max-width: 78ch;
+    }
+  }
+
+  .skill {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .skill a {
+    display: block;
+    padding: 1rem 0.25rem;
+    text-decoration: none;
+  }
+
+  .skill-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .skill-head .num {
+    color: var(--ink-subtle);
+  }
+
+  .skill-name {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .new {
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 0.1rem 0.35rem;
+    border-radius: 0.2rem;
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .skill-arrow {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    color: var(--ink-subtle);
+    transition: transform 200ms ease, color 200ms ease;
+  }
+
+  .skill a:hover .skill-arrow {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+  }
+
+  .skill a:hover .skill-name {
+    color: var(--accent);
+  }
+
+  .skill-what {
+    margin-top: 0.3rem;
+    color: var(--ink-muted);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    max-width: 52ch;
+  }
+
+  .runs {
+    margin-top: 1.5rem;
+    text-transform: none;
+    letter-spacing: 0.04em;
+    color: var(--ink-subtle);
+  }
+</style>

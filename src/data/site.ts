@@ -47,21 +47,21 @@ export const contacts: Contact[] = [
     label: "Email",
     handle: "contact@sshlg.me",
     href: "mailto:contact@sshlg.me",
-    note: "Fastest way in. I read every message and reply within one business day.",
+    note: "Anything that needs a real answer.",
     primary: true,
   },
   {
     label: "Telegram",
     handle: "@sshlg",
     href: "https://t.me/sshlg",
-    note: "Direct message.",
+    note: "Quick things.",
     primary: true,
   },
   {
     label: "X",
     handle: "@sshlg93",
     href: "https://x.com/sshlg93",
-    note: "Shorter thoughts, in public.",
+    note: "Short posts.",
   },
   {
     label: "GitHub",
@@ -73,7 +73,7 @@ export const contacts: Contact[] = [
     label: "GitHub org",
     handle: "@ssheleg",
     href: "https://github.com/ssheleg",
-    note: "Where the projects and open-source skills live.",
+    note: "Projects and the skills.",
   },
 ];
 
@@ -92,13 +92,13 @@ export const channels: Channel[] = [
     handle: "@She_La_Ve",
     href: "https://t.me/She_La_Ve",
     language: "RU",
-    about: "Posts in Russian — building products, AI, and the operator's view.",
+    about: "In Russian. Products, AI, and what running them actually costs.",
   },
   {
     name: "The Telegate",
     handle: "@TheTelegate",
     href: "https://t.me/TheTelegate",
     language: "EN",
-    about: "Posts in English — the same beat for an international audience.",
+    about: "In English. Same subjects, wider room.",
   },
 ];
