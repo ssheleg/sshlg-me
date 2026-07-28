@@ -64,6 +64,12 @@ export const contacts: Contact[] = [
     note: "Short posts.",
   },
   {
+    label: "LinkedIn",
+    handle: "sergey-sheleg",
+    href: "https://www.linkedin.com/in/sergey-sheleg-02579692/",
+    note: "Work history.",
+  },
+  {
     label: "GitHub",
     handle: "@sshlg",
     href: "https://github.com/sshlg",

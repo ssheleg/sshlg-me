@@ -21,6 +21,7 @@ const REQUIRED = [
   NAME,
   "contact@sshlg.me",
   "@sshlg93",
+  "linkedin.com/in/sergey-sheleg",
   "@She_La_Ve",
   "@TheTelegate",
   "github.com/ssheleg",
