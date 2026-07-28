@@ -10,6 +10,7 @@
     "prebuild": "node scripts/build-og.mjs",
     "build": "astro check && astro build && npm run check",
     "check": "node scripts/check-site.mjs",
+    "dns": "node scripts/setup-dns.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },

@@ -106,6 +106,11 @@ CNAME www       ssheleg.github.io
 Proxy status must be **DNS only** (grey cloud) — proxying the apex breaks
 GitHub's certificate issuance for the custom domain.
 
+`npm run dns` applies exactly those records. It reads the Cloudflare token from
+`CLOUDFLARE_API_TOKEN` or `~/.cloudflare-token` (needs Zone:DNS:Edit on the
+zone), is idempotent, un-proxies anything proxied, and never prints the token.
+Add `--dry-run` to see the diff first.
+
 `contact@sshlg.me` needs Cloudflare Email Routing (or equivalent) on the same
 zone; the site publishes the address but does not provision the mailbox.
 
