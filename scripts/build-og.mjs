@@ -1,94 +1,76 @@
-// Generate the Open Graph PNG (1200x630) with @resvg/resvg-js. Light,
-// techno-minimal — same identity as the site. Idempotent: regenerates only
-// when this script is newer than the target (or the target is missing).
+// Generate the Open Graph image (1200x630) from the banner illustration in
+// assets/, with the name and handle set over the empty left half. Idempotent:
+// regenerates only when this script or the banner is newer than the output.
 import { Resvg } from "@resvg/resvg-js";
-import { writeFileSync, statSync, existsSync, mkdirSync } from "node:fs";
+import { readFileSync, writeFileSync, statSync, existsSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const publicDir = resolve(__dirname, "../public");
 const scriptPath = resolve(__dirname, "build-og.mjs");
+const bannerPath = resolve(__dirname, "../assets/banner.png");
+const target = resolve(publicDir, "og.png");
 
-const INK = "#0a0c10";
-const MUTED = "#565f6d";
-const SUBTLE = "#8b93a1";
-const LINE = "#e7e9ee";
-const ACCENT = "#1a3cff";
+const W = 1200;
+const H = 630;
 
-function escapeXml(s) {
-  return String(s)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
-}
+// The banner is 2172x724 (aspect 3.0) and the subject sits on its right side.
+// Cover 1200x630 (aspect 1.905) by scaling to height and pulling the crop
+// window to the right, so the figure stays in frame instead of being centred
+// out of it.
+const SRC_W = 2172;
+const SRC_H = 724;
+const scale = H / SRC_H;
+const scaledW = SRC_W * scale;
+// 0 = crop from the left edge, 1 = from the right. The figure is right-of-centre.
+const FOCUS = 0.6;
+const offsetX = -(scaledW - W) * FOCUS;
 
-function renderSvg({ kicker, line1, line2, footerLeft, footerRight }) {
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+const banner = readFileSync(bannerPath).toString("base64");
+
+const svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
   <defs>
-    <pattern id="grid" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
-      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="${LINE}" stroke-width="1"/>
-    </pattern>
+    <linearGradient id="scrim" x1="0" y1="0" x2="${W}" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#000000" stop-opacity="0.92"/>
+      <stop offset="50%" stop-color="#000000" stop-opacity="0.78"/>
+      <stop offset="76%" stop-color="#000000" stop-opacity="0"/>
+    </linearGradient>
   </defs>
 
-  <rect width="1200" height="630" fill="#ffffff"/>
-  <rect width="1200" height="630" fill="url(#grid)"/>
+  <rect width="${W}" height="${H}" fill="#000000"/>
+  <image href="data:image/png;base64,${banner}" x="${offsetX}" y="0" width="${scaledW}" height="${H}" preserveAspectRatio="none"/>
+  <rect width="${W}" height="${H}" fill="url(#scrim)"/>
 
-  <g transform="translate(80, 76)">
-    <rect x="0" y="0" width="56" height="56" rx="12" fill="${INK}"/>
-    <path d="M16 20L26 28L16 36" stroke="#ffffff" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-    <path d="M31 37H43" stroke="${ACCENT}" stroke-width="3.6" stroke-linecap="round" fill="none"/>
-    <text x="76" y="26" fill="${INK}" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22" font-weight="600" letter-spacing="-0.02em">Sergey Sheleg</text>
-    <text x="76" y="48" fill="${SUBTLE}" font-family="ui-monospace, monospace" font-size="13" letter-spacing="0.14em">SSHLG.ME · WARSAW, PL</text>
-  </g>
+  <text x="72" y="250" fill="#ffffff" font-family="ui-monospace, monospace" font-size="17" letter-spacing="0.2em">SSHLG.ME</text>
 
-  <text x="80" y="272" fill="${ACCENT}" font-family="ui-monospace, monospace" font-size="18" letter-spacing="0.18em">${escapeXml(kicker)}</text>
+  <text x="72" y="342" fill="#ffffff" font-family="ui-sans-serif, system-ui, sans-serif" font-size="74" font-weight="600" letter-spacing="-0.035em">Sergey Sheleg</text>
 
-  <text x="80" y="368" fill="${INK}" font-family="ui-sans-serif, system-ui, sans-serif" font-size="76" font-weight="600" letter-spacing="-0.035em">${escapeXml(line1)}</text>
-  <text x="80" y="452" fill="${MUTED}" font-family="ui-sans-serif, system-ui, sans-serif" font-size="76" font-weight="600" letter-spacing="-0.035em">${escapeXml(line2)}</text>
+  <text x="72" y="392" fill="#c8ccd4" font-family="ui-sans-serif, system-ui, sans-serif" font-size="25" letter-spacing="-0.01em">Technical entrepreneur · Warsaw, PL</text>
 
-  <line x1="80" y1="516" x2="1120" y2="516" stroke="${LINE}" stroke-width="1"/>
+  <rect x="72" y="438" width="470" height="1" fill="rgba(255,255,255,0.25)"/>
 
-  <text x="80" y="560" fill="${INK}" font-family="ui-monospace, monospace" font-size="15" letter-spacing="0.12em">${escapeXml(footerLeft)}</text>
-  <text x="1120" y="560" text-anchor="end" fill="${SUBTLE}" font-family="ui-monospace, monospace" font-size="15" letter-spacing="0.12em">${escapeXml(footerRight)}</text>
+  <text x="72" y="486" fill="#9aa2ae" font-family="ui-monospace, monospace" font-size="16" letter-spacing="0.12em">13 YEARS SHIPPING PRODUCTS</text>
+  <text x="72" y="518" fill="#9aa2ae" font-family="ui-monospace, monospace" font-size="16" letter-spacing="0.12em">CONTACT@SSHLG.ME</text>
 </svg>`;
-}
-
-const pages = [
-  {
-    out: "og.png",
-    kicker: "// TECHNICAL ENTREPRENEUR · WARSAW, PL",
-    line1: "Sergey Sheleg.",
-    line2: "Still in the code.",
-    // No counts here on purpose: the OG image can't import the ledger, so a
-    // number baked in would drift the moment an entry is added.
-    footerLeft: "13 YEARS SHIPPING PRODUCTS",
-    footerRight: "CONTACT@SSHLG.ME",
-  },
-];
 
 if (!existsSync(publicDir)) mkdirSync(publicDir, { recursive: true });
 
-const scriptMtime = statSync(scriptPath).mtimeMs;
-let regenerated = 0;
+const newestInput = Math.max(
+  statSync(scriptPath).mtimeMs,
+  statSync(bannerPath).mtimeMs,
+);
 
-for (const page of pages) {
-  const target = resolve(publicDir, page.out);
-  if (existsSync(target) && statSync(target).mtimeMs >= scriptMtime) {
-    console.log(`[build-og] ${page.out} is up to date, skipping`);
-    continue;
-  }
-  const png = new Resvg(renderSvg(page), {
-    background: "#ffffff",
-    fitTo: { mode: "width", value: 1200 },
+if (existsSync(target) && statSync(target).mtimeMs >= newestInput) {
+  console.log("[build-og] og.png is up to date, skipping");
+} else {
+  const png = new Resvg(svg, {
+    background: "#000000",
+    fitTo: { mode: "width", value: W },
     font: { loadSystemFonts: true, defaultFontFamily: "Helvetica" },
   })
     .render()
     .asPng();
   writeFileSync(target, png);
-  console.log(`[build-og] wrote ${page.out} (${png.byteLength} bytes)`);
-  regenerated += 1;
+  console.log(`[build-og] wrote og.png (${png.byteLength} bytes)`);
 }
-
-console.log(`[build-og] done · regenerated ${regenerated}/${pages.length}`);

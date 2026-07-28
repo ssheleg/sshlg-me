@@ -17,37 +17,52 @@ const strip = [
       <span>Whoami</span>
     </p>
 
-    <p class="term prompt">
-      <span class="term-user">sshlg@me</span>
-      <span>~</span>
-      <span>%</span>
-      <span class="term-cmd">whoami</span>
-      <span class="caret" aria-hidden="true"></span>
-    </p>
+    <div class="split">
+      <div class="copy">
+        <p class="term prompt">
+          <span class="term-user">sshlg@me</span>
+          <span>~</span>
+          <span>%</span>
+          <span class="term-cmd">whoami</span>
+          <span class="caret" aria-hidden="true"></span>
+        </p>
 
-    <h1 class="name">{site.name}</h1>
-    <p class="role mono">{site.role}</p>
+        <h1 class="name">{site.name}</h1>
+        <p class="role mono">{site.role}</p>
 
-    <p class="lede">
-      Technical entrepreneur in Warsaw, Poland. {ledgerStats.years} years
-      building and launching products used by
-      <strong>millions of people</strong> — mobile, desktop, web. I stay in the
-      technical work: <strong>AI integrations and agent systems</strong>,
-      marketing and research tooling, growth and retention, go-to-market.
-    </p>
+        <p class="lede">
+          Technical entrepreneur in Warsaw, Poland. {ledgerStats.years} years
+          building and launching products used by
+          <strong>millions of people</strong> — mobile, desktop, web. I stay in
+          the technical work: <strong>AI integrations and agent systems</strong>,
+          marketing and research tooling, growth and retention, go-to-market.
+        </p>
 
-    <ul class="expertise" aria-label="Areas of expertise">
-      {site.expertise.map((item) => <li class="tag">{item}</li>)}
-    </ul>
+        <ul class="expertise" aria-label="Areas of expertise">
+          {site.expertise.map((item) => <li class="tag">{item}</li>)}
+        </ul>
 
-    <div class="actions">
-      <a class="btn btn-primary" href="/#projects">
-        ls ./projects
-        <span aria-hidden="true">↓</span>
-      </a>
-      <a class="btn btn-secondary" href={`mailto:${site.email}`}>
-        {site.email}
-      </a>
+        <div class="actions">
+          <a class="btn btn-primary" href="/#projects">
+            ls ./projects
+            <span aria-hidden="true">↓</span>
+          </a>
+          <a class="btn btn-secondary" href={`mailto:${site.email}`}>
+            {site.email}
+          </a>
+        </div>
+      </div>
+
+      <figure class="portrait">
+        <img
+          src="/portrait.jpg"
+          alt={`${site.name} — illustrated portrait`}
+          width="800"
+          height="800"
+          loading="eager"
+          decoding="sync"
+        />
+      </figure>
     </div>
 
     <dl class="strip">
@@ -65,6 +80,38 @@ const strip = [
   .hero {
     padding-top: clamp(3rem, 7vw, 5.5rem);
     padding-bottom: clamp(3.5rem, 9vw, 6rem);
+  }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  /* The portrait only earns its column when there's room for the lede to keep
+     a readable measure beside it. */
+  @media (min-width: 1000px) {
+    .split {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 22rem);
+      gap: 3rem;
+      align-items: center;
+    }
+  }
+
+  .portrait {
+    margin: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: #000;
+    line-height: 0;
+    max-width: 22rem;
+  }
+
+  .portrait img {
+    width: 100%;
+    height: auto;
   }
 
   .prompt {
