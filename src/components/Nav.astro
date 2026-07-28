@@ -1,0 +1,257 @@
+---
+import { site } from "@/data/site";
+
+const links = [
+  { label: "Whoami", href: "/#whoami" },
+  { label: "Now", href: "/#now" },
+  { label: "Projects", href: "/#projects" },
+  { label: "Writing", href: "/#writing" },
+  { label: "Contact", href: "/#contact" },
+];
+---
+
+<header class="nav">
+  <div class="page nav-row">
+    <a class="mark" href="/" aria-label={`${site.name} — home`}>
+      <span class="mark-glyph" aria-hidden="true">&gt;_</span>
+      <span class="mark-text">
+        <span class="mark-name">{site.name}</span>
+        <span class="mark-meta">sshlg.me · warsaw, pl</span>
+      </span>
+    </a>
+
+    <nav class="links" aria-label="Sections">
+      {links.map((l) => (
+        <a class="link" href={l.href}>{l.label}</a>
+      ))}
+    </nav>
+
+    <span class="status" title={site.availabilityDetail}>
+      <span class="dot" aria-hidden="true"></span>
+      <span class="status-text">{site.availability}</span>
+      <span class="sr-only">— {site.availabilityDetail}</span>
+    </span>
+
+    <a class="cta" href={`mailto:${site.email}`}>
+      <span class="cta-full">{site.email}</span>
+      <span class="cta-short" aria-hidden="true">EMAIL</span>
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+
+  <!-- Below 1080px the section links don't fit next to the mark, status, and
+       email. They drop into a scrollable strip rather than a JS menu. -->
+  <nav class="links-strip" aria-label="Sections">
+    <div class="page links-strip-row">
+      {links.map((l) => (
+        <a class="link" href={l.href}>{l.label}</a>
+      ))}
+    </div>
+  </nav>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .nav-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding-block: 0.7rem;
+  }
+
+  .mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    text-decoration: none;
+  }
+
+  .mark-glyph {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    border: 1px solid var(--ink);
+    border-radius: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: -0.05em;
+  }
+
+  .mark-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  .mark-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .mark-meta {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-subtle);
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .links {
+    display: none;
+    margin-left: auto;
+    gap: 1.35rem;
+    white-space: nowrap;
+  }
+
+  .link {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink-muted);
+    padding-block: 0.25rem;
+    position: relative;
+    transition: color 180ms ease;
+  }
+
+  .link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .link:hover {
+      color: var(--ink);
+    }
+    .link:hover::after {
+      transform: scaleX(1);
+    }
+  }
+
+  .status {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.35rem;
+    border: 1px solid rgba(15, 123, 79, 0.25);
+    background: var(--live-soft);
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.16em;
+    color: var(--live);
+    white-space: nowrap;
+  }
+
+  .status .dot {
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.8rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: border-color 180ms ease, background 180ms ease;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .cta:hover {
+      border-color: var(--ink);
+      background: var(--bg-sub);
+    }
+  }
+
+  .cta-short {
+    display: none;
+    letter-spacing: 0.16em;
+  }
+
+  .links-strip {
+    border-top: 1px solid var(--line);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .links-strip::-webkit-scrollbar {
+    display: none;
+  }
+
+  .links-strip-row {
+    display: flex;
+    gap: 1.25rem;
+    padding-block: 0.45rem;
+    width: max-content;
+    min-width: 100%;
+  }
+
+  @media (min-width: 1080px) {
+    .links {
+      display: inline-flex;
+    }
+    .status {
+      margin-left: 1.25rem;
+    }
+    .links-strip {
+      display: none;
+    }
+  }
+
+  @media (max-width: 1079px) {
+    .nav-row {
+      gap: 0.65rem;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .cta-full {
+      display: none;
+    }
+    .cta-short {
+      display: inline;
+    }
+  }
+
+  /* Narrow phones: the status word goes, the pulsing dot still reads as live. */
+  @media (max-width: 420px) {
+    .status-text {
+      display: none;
+    }
+    .status {
+      padding-inline: 0.4rem;
+    }
+  }
+</style>

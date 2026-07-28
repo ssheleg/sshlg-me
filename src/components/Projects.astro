@@ -1,0 +1,339 @@
+---
+import { ledger, ledgerStats, formatLedgerYears, badgeFor } from "@/data/ledger";
+import { platformProjects } from "@/data/open-source";
+
+const nicegram = platformProjects.find((p) => p.slug === "nicegram");
+---
+
+<section class="section" id="projects">
+  <div class="page">
+    <p class="section-index reveal">
+      <span class="num">03</span>
+      <span>Projects</span>
+    </p>
+
+    <div class="head reveal">
+      <h2>Everything shipped, in order.</h2>
+      <p>
+        {ledgerStats.total} products across consumer, AI, fintech, travel,
+        developer tools, and Web3 — {ledgerStats.live} still live and operating.
+        {ledgerStats.years} years, newest first.
+      </p>
+    </div>
+
+    {nicegram && (
+      <article class="spotlight reveal">
+        <div class="spotlight-metric">
+          <span class="metric-val">{nicegram.metric}</span>
+          <span class="mono">{nicegram.metricLabel}</span>
+        </div>
+        <div>
+          <div class="spotlight-title">
+            <a href={nicegram.href} target="_blank" rel="noopener noreferrer">
+              {nicegram.name}
+              <span aria-hidden="true">↗</span>
+            </a>
+            <span class="chip-kind">{nicegram.badge}</span>
+          </div>
+          <p class="spotlight-blurb">{nicegram.blurb}</p>
+          <div class="spotlight-links">
+            <span class="mono">{nicegram.role}</span>
+            {nicegram.links.map((l) => (
+              <a class="tag" href={l.href} target="_blank" rel="noopener noreferrer">
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </article>
+    )}
+
+    <ol class="rows" aria-label="Everything shipped">
+      {ledger.map((e, i) => {
+        const isEarly = e.status === "early-access";
+        const isLive = e.yearEnd === "present" && !isEarly;
+        const badge = badgeFor(e);
+        const Row = e.url ? "a" : "div";
+        const rowProps = e.url
+          ? {
+              href: e.url,
+              target: "_blank",
+              rel: "noopener noreferrer",
+              class: "row-inner is-link",
+            }
+          : { class: "row-inner" };
+        return (
+          <li class="row reveal">
+            <Row {...rowProps}>
+              <span class="mono idx">/{String(i + 1).padStart(2, "0")}</span>
+              <span class="mono years">{formatLedgerYears(e)}</span>
+              <div class="body">
+                <div class="title-line">
+                  <span class="name">{e.name}</span>
+                  {e.domain && <span class="mono domain">{e.domain}</span>}
+                  {badge && <span class="chip-kind">{badge}</span>}
+                  {isEarly && <span class="chip-early">EARLY ACCESS</span>}
+                  {isLive && (
+                    <span class="chip-live">
+                      <span class="dot" aria-hidden="true"></span>LIVE
+                    </span>
+                  )}
+                  {!isLive && !isEarly && (
+                    <span class="chip-archived">ARCHIVED</span>
+                  )}
+                </div>
+                <p class="blurb">{e.blurb}</p>
+                {e.metric && <p class="metric">{e.metric}</p>}
+                <div class="meta">
+                  <span class="mono role">{e.role}</span>
+                  <span class="tags">
+                    {e.tags.map((t) => <span class="tag">{t}</span>)}
+                  </span>
+                </div>
+              </div>
+              {e.url && <span class="arrow" aria-hidden="true">↗</span>}
+            </Row>
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .head {
+    margin-top: 1.6rem;
+    max-width: 62ch;
+  }
+
+  .head h2 {
+    font-size: clamp(1.8rem, 3.6vw, 2.7rem);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+  }
+
+  .head p {
+    margin-top: 0.9rem;
+    color: var(--ink-muted);
+    line-height: 1.65;
+  }
+
+  /* Nicegram spotlight */
+  .spotlight {
+    margin-top: 2.25rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    padding: 1.5rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 0.6rem;
+    background: var(--bg-sub);
+  }
+
+  @media (min-width: 760px) {
+    .spotlight {
+      grid-template-columns: minmax(0, 11rem) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: center;
+    }
+  }
+
+  .spotlight-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .metric-val {
+    font-family: var(--font-mono);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--accent);
+    font-feature-settings: "tnum";
+  }
+
+  .spotlight-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+
+  .spotlight-title a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .spotlight-title a:hover {
+    color: var(--accent);
+  }
+
+  .spotlight-blurb {
+    margin-top: 0.55rem;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    max-width: 62ch;
+  }
+
+  .spotlight-links {
+    margin-top: 0.8rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.9rem;
+  }
+
+  .spotlight-links a.tag {
+    text-decoration: none;
+    background: var(--bg);
+  }
+
+  .spotlight-links a.tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Ledger */
+  .rows {
+    margin-top: 2rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .row {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .row-inner {
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    align-items: start;
+    gap: 1.25rem;
+    padding: 1.25rem 0.75rem;
+    text-decoration: none;
+    color: inherit;
+    border-left: 2px solid transparent;
+    transition: background 180ms ease, border-color 180ms ease;
+  }
+
+  .row-inner.is-link:hover {
+    background: var(--bg-sub);
+    border-left-color: var(--accent);
+  }
+
+  .row-inner.is-link:hover .arrow {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+  }
+
+  .idx {
+    color: var(--ink-subtle);
+    min-width: 2.4rem;
+    padding-top: 0.2rem;
+  }
+
+  .years {
+    min-width: 8.5rem;
+    padding-top: 0.2rem;
+    color: var(--ink-muted);
+    text-transform: none;
+    letter-spacing: 0.08em;
+    font-feature-settings: "tnum";
+  }
+
+  .body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .title-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.55rem;
+  }
+
+  .name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .domain {
+    text-transform: none;
+    letter-spacing: 0.06em;
+  }
+
+  .blurb {
+    color: var(--ink-muted);
+    line-height: 1.55;
+    font-size: 0.94rem;
+  }
+
+  .metric {
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+    color: var(--accent);
+    font-feature-settings: "tnum";
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.8rem;
+  }
+
+  .role {
+    color: var(--ink-subtle);
+  }
+
+  .tags {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+
+  .arrow {
+    font-family: var(--font-mono);
+    color: var(--ink-subtle);
+    padding-top: 0.15rem;
+    transition: transform 200ms ease, color 200ms ease;
+  }
+
+  @media (max-width: 700px) {
+    .row-inner {
+      grid-template-columns: 1fr auto;
+      grid-template-areas:
+        "idx arrow"
+        "years arrow"
+        "body body";
+      gap: 0.35rem;
+      padding: 1.15rem 0.25rem;
+    }
+
+    .idx {
+      grid-area: idx;
+    }
+    .years {
+      grid-area: years;
+      min-width: 0;
+    }
+    .body {
+      grid-area: body;
+      margin-top: 0.4rem;
+    }
+    .arrow {
+      grid-area: arrow;
+      align-self: start;
+    }
+  }
+</style>

@@ -1,0 +1,27 @@
+{
+  "name": "sshlg-me",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Personal site of Sergey Sheleg — sshlg.me",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "prebuild": "node scripts/build-og.mjs",
+    "build": "astro check && astro build && npm run check",
+    "check": "node scripts/check-site.mjs",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/sitemap": "^3.6.0",
+    "@fontsource-variable/geist": "^5.2.6",
+    "@fontsource-variable/geist-mono": "^5.2.6",
+    "astro": "^6.3.6",
+    "typescript": "^5.7.3"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2"
+  }
+}

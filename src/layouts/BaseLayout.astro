@@ -1,0 +1,122 @@
+---
+import "@fontsource-variable/geist/index.css";
+import "@fontsource-variable/geist-mono/index.css";
+import "@/styles/global.css";
+import { site, contacts, channels } from "@/data/site";
+import { projects } from "@/data/projects";
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonical?: string;
+}
+
+const {
+  title = `${site.name} — ${site.role}`,
+  description = site.description,
+  ogImage = "/og.png",
+  canonical,
+} = Astro.props;
+
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, site.url).toString();
+const ogUrl = new URL(ogImage, site.url).toString();
+
+// The person is the entity here; the lab is where the commercial work lives.
+// No street address or tax identifiers are published.
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.name,
+  alternateName: site.nameAlternate,
+  jobTitle: site.role,
+  description: site.description,
+  url: site.url,
+  email: site.email,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: site.locality,
+    addressCountry: site.countryCode,
+  },
+  worksFor: {
+    "@type": "Organization",
+    name: site.lab.name,
+    url: site.lab.url,
+  },
+  sameAs: [
+    ...contacts.filter((c) => c.href.startsWith("http")).map((c) => c.href),
+    ...channels.map((c) => c.href),
+    site.lab.url,
+    ...projects.map((p) => p.url),
+  ],
+  knowsAbout: [
+    "AI product development",
+    "AI agents",
+    "Coding agent workflows",
+    "Go-to-market strategy",
+    "Full-stack engineering",
+    "Growth and retention",
+  ],
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="color-scheme" content="light" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@sshlg93" />
+    <meta name="twitter:creator" content="@sshlg93" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogUrl} />
+
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(personSchema)}
+    />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+    <slot />
+
+    <script>
+      const observer = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              observer.unobserve(entry.target);
+            }
+          }
+        },
+        { rootMargin: "0px 0px -8% 0px", threshold: 0.05 },
+      );
+      document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+    </script>
+  </body>
+</html>

@@ -1,0 +1,119 @@
+---
+import { channels } from "@/data/site";
+---
+
+<section class="section" id="writing">
+  <div class="page">
+    <p class="section-index reveal">
+      <span class="num">04</span>
+      <span>Writing</span>
+    </p>
+
+    <div class="head reveal">
+      <h2>Where I write.</h2>
+      <p>
+        Two Telegram channels, same beat in two languages: what I'm building,
+        what works, and what turned out to be a dead end.
+      </p>
+    </div>
+
+    <ul class="grid">
+      {channels.map((c) => (
+        <li class="reveal">
+          <a class="card" href={c.href} target="_blank" rel="noopener noreferrer">
+            <div class="card-top">
+              <span class="chip-kind">{c.language}</span>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </div>
+            <span class="name">{c.name}</span>
+            <span class="mono handle">{c.handle}</span>
+            <p class="about">{c.about}</p>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .head {
+    margin-top: 1.6rem;
+    max-width: 62ch;
+  }
+
+  .head h2 {
+    font-size: clamp(1.8rem, 3.6vw, 2.7rem);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    font-weight: 600;
+  }
+
+  .head p {
+    margin-top: 0.9rem;
+    color: var(--ink-muted);
+    line-height: 1.65;
+  }
+
+  .grid {
+    margin-top: 2.25rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 760px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    height: 100%;
+    padding: 1.4rem;
+    border: 1px solid var(--line);
+    border-radius: 0.6rem;
+    text-decoration: none;
+    transition: border-color 200ms ease, background 200ms ease;
+  }
+
+  .card:hover {
+    border-color: var(--accent);
+    background: var(--bg-sub);
+  }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .arrow {
+    font-family: var(--font-mono);
+    color: var(--ink-subtle);
+  }
+
+  .card:hover .arrow {
+    color: var(--accent);
+  }
+
+  .name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .handle {
+    text-transform: none;
+    letter-spacing: 0.06em;
+  }
+
+  .about {
+    margin-top: 0.3rem;
+    color: var(--ink-muted);
+    font-size: 0.94rem;
+    line-height: 1.55;
+  }
+</style>
