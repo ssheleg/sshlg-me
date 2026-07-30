@@ -30,6 +30,11 @@ export const skillFamily = {
       name: "seo-aeo-audit",
       repo: "https://github.com/ssheleg/seo-aeo-audit",
       what: "Evidence-first SEO and AEO/GEO audit: ten tracks, evidence tiers, a dated Google update timeline, and 59 prioritized growth plays.",
+    },
+    {
+      name: "agent-sync",
+      repo: "https://github.com/ssheleg/agent-sync",
+      what: "Several agents in one repository without collisions: leases with a TTL, race-free id reservation, a run journal, and a generated board.",
       isNew: true,
     },
     {

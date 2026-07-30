@@ -27,6 +27,7 @@ const REQUIRED = [
   "github.com/ssheleg",
   "github.com/sshlg",
   "svlab.online",
+  "agent-sync",
 ];
 
 const SECTION_ORDER = ["Whoami", "Toolkit", "Projects", "Writing", "Contact"];
